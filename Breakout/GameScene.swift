@@ -11,15 +11,21 @@ import GameplayKit
 class GameScene: SKScene {
     
     var ball = SKShapeNode()
+    var paddle = SKSpriteNode()
+    var brick = SKSpriteNode()
+    var loseZone = SKSpriteNode()
     
     override func didMove(to view: SKView) {
         createBackground()
+        makeLoseZone()
         resetGame()
     }
     
     func  resetGame() {
     // this stuff happens before each game starts
     makeBall()
+    makePaddle()
+    makeBrick()
     }
     
     func createBackground() {
@@ -63,6 +69,33 @@ class GameScene: SKScene {
         ball.physicsBody?.contactTestBitMask = (ball.physicsBody?.collisionBitMask)!
         
         addChild(ball) // add ball object
+    }
+    
+    func makePaddle() {
+        paddle.removeFromParent() // remove the paddle if it exists
+        paddle = SKSpriteNode(color: .white, size: CGSize(width: frame.width/4, height: 20))
+        paddle.position = CGPoint(x: frame.midX, y: frame.minY + 125)
+        paddle.name = "paddle"
+        paddle.physicsBody = SKPhysicsBody(rectangleOf: paddle.size)
+        paddle.physicsBody?.isDynamic = false
+        addChild(paddle)
+    }
+    
+    func makeBrick() {
+        brick.removeFromParent()
+        brick = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 20))
+        brick.position = CGPoint(x: frame.midX, y: frame.maxY - 50)
+        brick.name = "brick"
+        brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+        brick.physicsBody?.isDynamic = false
+        addChild(brick)
+    }
+    func makeLoseZone() {
+        loseZone = SKSpriteNode(color: .red, size: CGSize(width: frame.width, height: 50))
+        loseZone.position = CGPoint(x: frame.midX, y: frame.minY + 25)
+        loseZone.physicsBody = SKPhysicsBody(rectangleOf: loseZone.size)
+        loseZone.physicsBody?.isDynamic = false
+        addChild(loseZone)
     }
 }
 
